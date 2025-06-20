@@ -34,12 +34,17 @@ export default function SignIn() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sage-pale to-cream flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-sage-pale to-cream flex items-center justify-center p-4 sm:p-6 lg:p-8">
+      <div className="w-full max-w-sm sm:max-w-md">
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-          <div className="bg-gradient-to-r from-sage-dark to-sage-light px-8 py-6 text-center">
-            <div className="w-16 h-16 bg-white rounded-full mx-auto mb-4 flex items-center justify-center">
-              <svg className="w-8 h-8 text-sage-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="bg-gradient-to-r from-sage-dark to-sage-light px-6 sm:px-8 py-6 text-center">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white rounded-full mx-auto mb-4 flex items-center justify-center">
+              <svg
+                className="w-6 h-6 sm:w-8 sm:h-8 text-sage-dark"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -48,15 +53,17 @@ export default function SignIn() {
                 />
               </svg>
             </div>
-            <h1 className="text-2xl font-bold text-white">ProductManagement</h1>
-            <p className="text-white/80">Product Management System</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-white">EcoMart</h1>
+            <p className="text-white/80 text-sm sm:text-base">Product Management System</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="p-8">
-            <h2 className="text-2xl font-bold text-sage-dark mb-6 text-center">Sign In</h2>
+          <form onSubmit={handleSubmit} className="p-6 sm:p-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-sage-dark mb-6 text-center">Sign In</h2>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">{error}</div>
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4 text-sm">
+                {error}
+              </div>
             )}
 
             <div className="space-y-4">
@@ -65,7 +72,7 @@ export default function SignIn() {
                 <input
                   type="text"
                   placeholder="Enter your username"
-                  className="w-full px-4 py-3 border border-sage-light rounded-lg focus:ring-2 focus:ring-sage-dark focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-sage-light rounded-lg focus:ring-2 focus:ring-sage-dark focus:border-transparent transition-all duration-200 text-sm sm:text-base"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
@@ -76,7 +83,7 @@ export default function SignIn() {
                 <input
                   type="password"
                   placeholder="Enter your password"
-                  className="w-full px-4 py-3 border border-sage-light rounded-lg focus:ring-2 focus:ring-sage-dark focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-sage-light rounded-lg focus:ring-2 focus:ring-sage-dark focus:border-transparent transition-all duration-200 text-sm sm:text-base"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -84,7 +91,7 @@ export default function SignIn() {
             </div>
 
             <button
-              className="w-full bg-gradient-to-r from-sage-dark to-sage-light text-white rounded-lg py-3 font-semibold mt-6 hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-sage-dark to-sage-light text-white rounded-lg py-3 font-semibold mt-6 hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
               type="submit"
               disabled={loading}
             >
