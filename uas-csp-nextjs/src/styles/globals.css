@@ -1,30 +1,89 @@
-@import "tailwindcss";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: 0 0% 100%;
+  --foreground: 0 0% 3.9%;
+  --sage-dark: #819a91;
+  --sage-light: #a7c1a8;
+  --sage-pale: #d1d8be;
+  --cream: #eeefe0;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--cream);
+  color: hsl(var(--foreground));
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: #eeefe0;
+    color: hsl(var(--foreground));
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Sage color utilities */
+  .bg-sage-dark {
+    background-color: #819a91 !important;
+  }
+  .bg-sage-light {
+    background-color: #a7c1a8 !important;
+  }
+  .bg-sage-pale {
+    background-color: #d1d8be !important;
+  }
+  .bg-cream {
+    background-color: #eeefe0 !important;
+  }
+  .text-sage-dark {
+    color: #819a91 !important;
+  }
+  .text-sage-light {
+    color: #a7c1a8 !important;
+  }
+  .border-sage-light {
+    border-color: #a7c1a8 !important;
+  }
+  .hover\:bg-sage-dark:hover {
+    background-color: #819a91 !important;
+  }
+  .hover\:bg-red-600:hover {
+    background-color: #dc2626 !important;
+  }
+
+  /* Gradient utilities */
+  .from-sage-dark {
+    --tw-gradient-from: #819a91 var(--tw-gradient-from-position);
+    --tw-gradient-to: rgb(129 154 145 / 0) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  }
+  .to-sage-light {
+    --tw-gradient-to: #a7c1a8 var(--tw-gradient-to-position);
+  }
+  .from-sage-light {
+    --tw-gradient-from: #a7c1a8 var(--tw-gradient-from-position);
+    --tw-gradient-to: rgb(167 193 168 / 0) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  }
+  .to-sage-pale {
+    --tw-gradient-to: #d1d8be var(--tw-gradient-to-position);
+  }
+  .from-sage-pale {
+    --tw-gradient-from: #d1d8be var(--tw-gradient-from-position);
+    --tw-gradient-to: rgb(209 216 190 / 0) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  }
+  .to-cream {
+    --tw-gradient-to: #eeefe0 var(--tw-gradient-to-position);
+  }
 }

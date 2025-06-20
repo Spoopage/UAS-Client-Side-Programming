@@ -1,6 +1,6 @@
-"use client";
-import SignIn from "../../components/SignIn";
+"use client"
+import SignIn from "../../components/SignIn"
 
 export default function SigninPage() {
-  return <SignIn />;
+  return <SignIn />
 }

@@ -1,7 +1,6 @@
-// /src/app/page.js
-import { redirect } from "next/navigation";
+import { redirect } from "next/navigation"
 
 export default function Home() {
-  redirect('/signin');
-  return null;
+  redirect("/signin")
+  return null
 }
