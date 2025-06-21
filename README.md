@@ -69,7 +69,7 @@ Buka [http://localhost:3000](http://localhost:3000)
 
 1. Push ke GitHub
 2. Import ke Vercel, atur environment variable
-3. Deploy!
+3. Deploy
 
 ---
 
