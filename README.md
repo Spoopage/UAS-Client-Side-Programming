@@ -1,103 +1,96 @@
+
+# EcoMart Inventory – Next.js + Supabase
+
 ## Quick Setup
 
 ### Prerequisites
 
-- **Node.js** 18.0 or higher
-- **npm** or **yarn**
+- **Node.js** 18+
+- **npm** atau **yarn**
+- **Supabase Project** (https://app.supabase.com/)
 
+---
 
-### Installation
+### 1. Clone & Install
 
-1. **Clone and install**
-
-```shellscript
+```bash
 git clone https://github.com/Spoopage/UAS-Client-Side-Programming.git
-cd uas-csp-nextjs
+cd UAS-Client-Side-Programming
 npm install
-```
+````
 
+---
 
-2. **Install JSON Server for backend**
+### 2. Supabase Setup
 
-```shellscript
-npm install -g json-server
-```
+1. **Buat project di Supabase**
 
+2. Ambil:
 
-3. **Create database file (`db.json`) on root folder**
+   * **Project URL** → `NEXT_PUBLIC_SUPABASE_URL`
+   * **Anon Key**   → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
-```json
-{
-  "users": [
-    {"id": 1, "username": "admin", "password": "admin123", "role": "admin"},
-    {"id": 2, "username": "user", "password": "user123", "role": "user"}
-  ],
-  "products": [
-    {"id": 1, "nama_produk": "Sample Product", "harga_satuan": 50000, "quantity": 10}
-  ]
-}
-```
+3. **Buat file `.env.local` di root:**
 
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   ```
 
-4. **Start servers**
+4. **Buat table:**
 
-```shellscript
-# Terminal 1 - Backend
-json-server --watch db.json --port 4000
+   * `users` (id, email, username, password, role)
+   * `products` (id, nama\_produk, harga\_satuan, quantity)
 
-# Terminal 2 - Frontend
+5. **Aktifkan Auth** (Email sign-in)
+
+6. **Atur RLS policy** di table users dan products
+
+---
+
+### 3. Jalankan Aplikasi
+
+```bash
 npm run dev
 ```
 
+Buka [http://localhost:3000](http://localhost:3000)
 
-5. **Access application**
+---
 
-1. Frontend: [http://localhost:3000](http://localhost:3000)
-2. Login: `admin/admin123` or `user/user123`
+### 4. Login
 
+* **Admin**: email & password sesuai data pada Supabase
+* **User**: email & password sesuai data pada Supabase
 
+---
 
+### 5. Deploy ke Vercel
 
+1. Push ke GitHub
+2. Import ke Vercel, atur environment variable
+3. Deploy
+
+---
 
 ## Key Dependencies
 
-```json
-{
-  "dependencies": {
-    "next": "^15.3.4",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "tailwindcss-animate": "^1.0.7"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4.1.10",
-    "typescript": "^5.8.3",
-    "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.6"
-  }
-}
-```
+* Next.js
+* React
+* Supabase JS
+* Tailwind CSS
+
+---
 
 ## Troubleshooting
 
-**CSS not working?**
+* **CSS error:**
 
-```shellscript
-rm -rf .next && npm run dev
-```
+  ```bash
+  rm -rf .next && npm run dev
+  ```
 
-**Tailwind v4 issues?**
+* **Supabase error:**
+  Pastikan env & policy sudah benar
 
-```shellscript
-# Downgrade to stable v3
-npm uninstall tailwindcss @tailwindcss/postcss
-npm install -D tailwindcss@^3.4.0 postcss autoprefixer
-```
-
-**PostCSS errors?**
-
-```shellscript
-# Run without Turbopack
-next dev
-```
+---
