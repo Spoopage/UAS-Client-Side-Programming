@@ -68,7 +68,7 @@ export default function Navbar({ user }) {
                 </svg>
               </div>
               <div className="text-sm">
-                <p className="font-medium text-sage-dark">{profile.userName || user.email}</p>
+                <p className="font-medium text-sage-dark">{profile.username || user.email}</p>
                 <p className="text-sage-light capitalize">{profile.role || "user"}</p>
               </div>
             </div>
@@ -122,8 +122,8 @@ export default function Navbar({ user }) {
                   </svg>
                 </div>
                 <div className="text-sm">
-                  <p className="font-medium text-sage-dark">{userName}</p>
-                  <p className="text-sage-light capitalize">{userRole}</p>
+                  <p className="font-medium text-sage-dark">{user.username}</p>
+                  <p className="text-sage-light capitalize">{user.role}</p>
                 </div>
               </div>
               <button
