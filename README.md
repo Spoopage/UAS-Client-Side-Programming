@@ -94,9 +94,3 @@ Buka [http://localhost:3000](http://localhost:3000)
   Pastikan env & policy sudah benar
 
 ---
-
-**Tidak perlu lagi setup JSON Server.
-Data sudah 100% Supabase.**
-
-```
-```
