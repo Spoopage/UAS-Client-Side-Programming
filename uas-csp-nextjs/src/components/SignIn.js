@@ -1,8 +1,11 @@
 "use client"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabaseClient";
+import { setegid } from "process";
 
 export default function SignIn() {
+  const [email, setEmail] = useState("")
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
@@ -10,28 +13,26 @@ export default function SignIn() {
   const router = useRouter()
 
   async function handleSubmit(e) {
-    e.preventDefault()
-    if (!username || !password) {
-      setError("Username and password are required")
-      return
-    }
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
-    setLoading(true)
-    try {
-      const res = await fetch(`http://localhost:4000/users?username=${username}&password=${password}`)
-      const users = await res.json()
-      if (users.length > 0) {
-        localStorage.setItem("user", JSON.stringify(users[0]))
-        router.replace("/dashboard")
-      } else {
-        setError("Invalid username or password!")
-      }
-    } catch (err) {
-      setError("Connection error. Please try again.")
-    } finally {
-      setLoading(false)
+    // Gunakan login Supabase Auth (email)
+    const { data:{user}, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      setError(error.message);
+    } else {
+      localStorage.setItem('user', JSON.stringify(user));
+      router.replace("/dashboard");
     }
   }
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-sage-pale to-cream flex items-center justify-center p-4 sm:p-6 lg:p-8">
@@ -68,13 +69,24 @@ export default function SignIn() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-sage-dark mb-2">Username</label>
+                {/* <label className="block text-sm font-medium text-sage-dark mb-2">Username</label>
                 <input
                   type="text"
                   placeholder="Enter your username"
                   className="w-full px-4 py-3 border border-sage-light rounded-lg focus:ring-2 focus:ring-sage-dark focus:border-transparent transition-all duration-200 text-sm sm:text-base"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                /> */}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-sage-dark mb-2">Email</label>
+                <input
+                  type="text"
+                  placeholder="Enter your email"
+                  className="w-full px-4 py-3 border border-sage-light rounded-lg focus:ring-2 focus:ring-sage-dark focus:border-transparent transition-all duration-200 text-sm sm:text-base"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
 

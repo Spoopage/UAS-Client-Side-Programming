@@ -1,11 +1,35 @@
 "use client"
-import { logout } from "../utils/auth"
+import { logout } from "../utils/supabase/authSupabase"
+import { supabase } from "@/lib/supabaseClient"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect } from "react";
+
+export async function fetchUserProfile(email) {
+  // ambil user dari table "users" by email
+  const { data, error } = await supabase
+    .from("users")
+    .select("username, role")
+    .eq("email", email)
+    .single();
+
+  if (error) return null;
+  return data;
+}
 
 export default function Navbar({ user }) {
   const router = useRouter()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [profile, setProfile] = useState({ username: "", role: "" })
+
+  // fetch username & role dari table users
+  useEffect(() => {
+    async function getProfile() {
+      if (!user?.email) return;
+      const data = await fetchUserProfile(user.email)
+      if (data) setProfile(data)
+    }
+    getProfile()
+  }, [user])
 
   return (
     <nav className="bg-white shadow-lg border-b border-sage-light">
@@ -44,8 +68,8 @@ export default function Navbar({ user }) {
                 </svg>
               </div>
               <div className="text-sm">
-                <p className="font-medium text-sage-dark">{user.username}</p>
-                <p className="text-sage-light capitalize">{user.role}</p>
+                <p className="font-medium text-sage-dark">{profile.userName || user.email}</p>
+                <p className="text-sage-light capitalize">{profile.role || "user"}</p>
               </div>
             </div>
 
@@ -98,8 +122,8 @@ export default function Navbar({ user }) {
                   </svg>
                 </div>
                 <div className="text-sm">
-                  <p className="font-medium text-sage-dark">{user.username}</p>
-                  <p className="text-sage-light capitalize">{user.role}</p>
+                  <p className="font-medium text-sage-dark">{userName}</p>
+                  <p className="text-sage-light capitalize">{userRole}</p>
                 </div>
               </div>
               <button

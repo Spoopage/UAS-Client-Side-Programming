@@ -1,14 +1,14 @@
-export function getCurrentUser() {
-  if (typeof window !== "undefined") {
-    const user = localStorage.getItem("user")
-    return user ? JSON.parse(user) : null
-  }
-  return null
+import { supabase } from "@/lib/supabaseClient"
+
+export async function getCurrentUser() {
+  const { data, error } = await supabase.auth.getUser()
+  // user: { id, email, ... } atau null jika belum login
+  return data?.user || null
 }
 
-export function logout(router) {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem("user")
+export async function logout(router) {
+  await supabase.auth.signOut()
+  if (router) {
+    router.replace("/signin")
   }
-  router.replace("/signin")
 }

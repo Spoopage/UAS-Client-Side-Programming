@@ -1,24 +1,34 @@
 "use client"
 import { useEffect, useState } from "react"
+import { supabase } from "@/lib/supabaseClient"
 
-export default function ProductTable({ user, onEdit }) {
+export default function ProductTable({ role, onEdit }) {
   const [products, setProducts] = useState([])
-  const isAdmin = user.role === "admin"
+  const isAdmin = role === "admin"
 
-  const fetchProducts = () => {
-    fetch("http://localhost:4000/products")
-      .then((res) => res.json())
-      .then(setProducts)
+  const fetchProducts = async () => {
+    const { data, error } = await supabase.from("products").select("*")
+    if (error) {
+      alert("Failed to fetch products!")
+      setProducts([])
+    } else {
+      setProducts(data || [])
+    }
   }
 
   useEffect(() => {
     fetchProducts()
+    // eslint-disable-next-line
   }, [])
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return
-    await fetch(`http://localhost:4000/products/${id}`, { method: "DELETE" })
-    fetchProducts()
+    const { error } = await supabase.from("products").delete().eq("id", id)
+    if (error) {
+      alert("Failed to delete product!")
+    } else {
+      fetchProducts()
+    }
   }
 
   const formatPrice = (price) => {
@@ -28,6 +38,7 @@ export default function ProductTable({ user, onEdit }) {
       minimumFractionDigits: 0,
     }).format(price)
   }
+
 
   if (products.length === 0) {
     return (
@@ -75,13 +86,12 @@ export default function ProductTable({ user, onEdit }) {
                     <p className="text-sm font-semibold text-sage-dark mt-1">{formatPrice(prod.harga_satuan)}</p>
                     <div className="flex items-center justify-between mt-2">
                       <span
-                        className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                          prod.quantity > 10
-                            ? "bg-green-100 text-green-800"
-                            : prod.quantity > 0
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-red-100 text-red-800"
-                        }`}
+                        className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${prod.quantity > 10
+                          ? "bg-green-100 text-green-800"
+                          : prod.quantity > 0
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-red-100 text-red-800"
+                          }`}
                       >
                         {prod.quantity} units
                       </span>
@@ -170,13 +180,12 @@ export default function ProductTable({ user, onEdit }) {
                 </td>
                 <td className="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">
                   <span
-                    className={`inline-flex px-2 lg:px-3 py-1 text-xs font-medium rounded-full ${
-                      prod.quantity > 10
-                        ? "bg-green-100 text-green-800"
-                        : prod.quantity > 0
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-red-100 text-red-800"
-                    }`}
+                    className={`inline-flex px-2 lg:px-3 py-1 text-xs font-medium rounded-full ${prod.quantity > 10
+                      ? "bg-green-100 text-green-800"
+                      : prod.quantity > 0
+                        ? "bg-yellow-100 text-yellow-800"
+                        : "bg-red-100 text-red-800"
+                      }`}
                   >
                     {prod.quantity} units
                   </span>

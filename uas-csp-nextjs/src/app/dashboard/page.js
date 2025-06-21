@@ -1,7 +1,8 @@
 "use client"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { getCurrentUser } from "../../utils/auth"
+import { getCurrentUser } from "../../utils/supabase/authSupabase"
+import { supabase } from "@/lib/supabaseClient"
 import Navbar from "../../components/Navbar"
 import ProductTable from "../../components/ProductTable"
 import ProductForm from "../../components/ProductForm"
@@ -9,16 +10,35 @@ import ProductForm from "../../components/ProductForm"
 export default function Dashboard() {
   const router = useRouter()
   const [user, setUser] = useState(null)
+  const [role, setRole] = useState("user");
   const [editing, setEditing] = useState(null)
   const [refresh, setRefresh] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const u = getCurrentUser()
-    if (!u) router.replace("/signin")
-    else setUser(u)
-  }, [router])
+    async function checkUser() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        window.location.replace("/signin");
+        setLoading(false);
+        return;
+      }
+      setUser(user);
 
-  if (!user) return null
+      const { data: dbUser } = await supabase
+        .from("users")
+        .select("role")
+        .eq("email", user.email)
+        .single();
+
+      setRole(dbUser?.role || "user");
+      setLoading(false);
+    }
+    checkUser();
+  }, []);
+
+  if (loading) return null;
+  if (!user) return null;
 
   return (
     <div className="min-h-screen bg-cream">
@@ -34,7 +54,7 @@ export default function Dashboard() {
           {/* Content Section */}
           <div className="p-4 sm:p-6 lg:p-8">
             {/* Admin Form Section */}
-            {user.role === "admin" && (
+            {role === "admin" && (
               <div className="mb-6 sm:mb-8">
                 <ProductForm
                   editing={editing}
@@ -65,7 +85,7 @@ export default function Dashboard() {
                 <span className="hidden sm:inline">Product Inventory</span>
                 <span className="sm:hidden">Products</span>
               </h2>
-              <ProductTable user={user} onEdit={(prod) => setEditing(prod)} key={refresh} />
+              <ProductTable role={role} onEdit={(prod) => setEditing(prod)} key={refresh} />
             </div>
           </div>
         </div>

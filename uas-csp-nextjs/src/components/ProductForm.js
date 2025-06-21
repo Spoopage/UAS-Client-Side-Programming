@@ -1,5 +1,6 @@
 "use client"
 import { useState, useEffect } from "react"
+import { supabase } from "@/lib/supabaseClient";
 
 export default function ProductForm({ editing, onDone }) {
   const [form, setForm] = useState({
@@ -18,25 +19,40 @@ export default function ProductForm({ editing, onDone }) {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!form.nama_produk || !form.harga_satuan || !form.quantity) {
-      alert("All fields are required!")
-      return
+      alert("All fields are required!");
+      return;
     }
-    const method = editing ? "PUT" : "POST"
-    const url = editing ? `http://localhost:4000/products/${editing.id}` : "http://localhost:4000/products"
-    await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...form,
-        harga_satuan: Number(form.harga_satuan),
-        quantity: Number(form.quantity),
-      }),
-    })
-    onDone()
-    setForm({ nama_produk: "", harga_satuan: "", quantity: "" })
-  }
+    // Konversi angka
+    const data = {
+      ...form,
+      harga_satuan: Number(form.harga_satuan),
+      quantity: Number(form.quantity),
+    };
+    let result, error;
+    if (editing) {
+      // UPDATE
+      ({ error } = await supabase
+        .from("products")
+        .update(data)
+        .eq("id", editing.id)
+      );
+    } else {
+      // CREATE
+      ({ error } = await supabase
+        .from("products")
+        .insert([data])
+      );
+    }
+    if (error) {
+      alert("Failed to save product!");
+      return;
+    }
+    onDone();
+    setForm({ nama_produk: "", harga_satuan: "", quantity: "" });
+  };
+
 
   return (
     <div className="bg-white rounded-lg sm:rounded-xl shadow-lg border border-sage-light/30 overflow-hidden">
